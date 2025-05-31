@@ -26,8 +26,7 @@ function loadState() {
 }
 
 // --- UI Rendering ---
-const oldRender = render;
-render = function() {
+function render() {
   const app = document.getElementById('app');
   app.innerHTML = '';
   if (!supabase) {
@@ -52,7 +51,7 @@ render = function() {
       }
     }
   });
-};
+}
 
 async function getCurrentUser() {
   if (!supabase) return null;
@@ -140,7 +139,7 @@ function renderTabs(root) {
   nav.className = 'flex justify-around bg-white rounded-b-2xl shadow-md fixed bottom-0 left-0 right-0 z-10 md:static md:rounded-none md:shadow-none';
   nav.innerHTML = tabs.map(tab => `
     <button class="flex-1 py-3 text-center text-lg font-medium transition ${STATE.tab === tab.id ? 'bg-blue-100 text-blue-600' : 'text-gray-500'}" data-tab="${tab.id}">
-      <span class="block text-2xl">${tab.id === 'profile' ? `<span class='inline-block w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 text-white flex items-center justify-center font-bold text-base mx-auto'>${STATE.user ? STATE.user.name[0].toUpperCase() : '?'}</span>` : tab.icon}</span>
+      <span class="block text-2xl">${tab.id === 'profile' ? `<span class='inline-block w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 text-white flex items-center justify-center font-bold text-base mx-auto'>${STATE.user ? (STATE.user.name ? STATE.user.name[0].toUpperCase() : (STATE.user.email ? STATE.user.email[0].toUpperCase() : '?')) : '?'}</span>` : tab.icon}</span>
       <span class="block text-xs">${tab.label}</span>
     </button>
   `).join('');
